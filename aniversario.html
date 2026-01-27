@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Feliz Aniversário Jão</title>
+
+<style>
+:root{
+  --rosa:#ff69b4;
+  --bg:#ffe6f0;
+  --txt:#d63384;
+}
+
+body{
+  margin:0;
+  font-family:'Segoe UI', sans-serif;
+  background:var(--bg);
+  color:var(--txt);
+  overflow-x:hidden;
+}
+
+/* TELAS */
+.tela{
+  position:fixed;
+  inset:0;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:flex-start;
+  text-align:center;
+  padding:2rem 1.5rem;
+  overflow-y:auto;
+}
+
+.hidden{display:none;}
+
+h1{
+  font-size:clamp(2.4rem,6vw,3.2rem);
+  margin-bottom:1rem;
+}
+
+/* TEXTO FINAL */
+#telaFinal h1{
+  font-size:clamp(2.6rem,7vw,3.4rem);
+  margin-bottom:1.5rem;
+}
+
+#telaFinal p{
+  max-width:900px;
+  font-size:clamp(1.5rem,4.5vw,1.9rem);
+  line-height:1.8;
+  margin-bottom:1.2rem;
+}
+
+/* PERGUNTA */
+#pergunta{
+  font-size:clamp(1.8rem,5vw,2.5rem);
+  max-width:900px;
+}
+
+/* GIF */
+.gif img{
+  width:90%;
+  max-width:720px;
+  border-radius:20px;
+  margin-top:1.5rem;
+}
+
+/* BOTÕES */
+.botoes{
+  position:relative;
+  width:100%;
+  max-width:520px;
+  height:160px;
+  margin-top:2rem;
+}
+
+button{
+  font-size:clamp(1.2rem,4vw,1.6rem);
+  padding:.8rem 1.6rem;
+  border:none;
+  border-radius:20px;
+  cursor:pointer;
+}
+
+#sim{
+  background:var(--rosa);
+  color:#fff;
+  position:absolute;
+  left:50%;
+  top:10px;
+  transform:translateX(-50%);
+}
+
+#nao{
+  background:#ff3b3b;
+  color:#fff;
+  position:absolute;
+  left:10%;
+  top:90px;
+  transition:left .15s ease, top .15s ease;
+}
+
+/* TELA NÃO */
+#telaNao img{
+  max-width:720px;
+  width:90%;
+  border-radius:20px;
+}
+
+.voltar{
+  margin-top:1.5rem;
+  background:var(--rosa);
+  color:#fff;
+}
+
+/* FORCA FOFA (CHIBI) */
+#forcaPalavra{
+  font-size:clamp(2rem,5vw,3rem);
+  letter-spacing:.4rem;
+  margin:1.5rem 0;
+}
+
+#boneco{
+  width:120px;
+  height:200px;
+  position:relative;
+  margin-bottom:1.5rem;
+}
+
+/* PARTES DO BONECO */
+.bonecoParte{
+  position:absolute;
+  background:#444;
+  opacity:0;
+  transform:scale(0);
+  border-radius:50%;
+  transition:all 0.5s ease;
+}
+
+.cabeca{
+  width:50px;
+  height:50px;
+  top:0;
+  left:50%;
+  transform:translateX(-50%) scale(0);
+  border-radius:50%;
+}
+
+.corpo{
+  width:12px;
+  height:70px;
+  top:50px;
+  left:50%;
+  transform:translateX(-50%) scale(0);
+  border-radius:6px;
+}
+
+.braco{
+  width:50px;
+  height:10px;
+  top:60px;
+  background:#444;
+  border-radius:5px;
+}
+
+.braco.esquerdo{
+  left:calc(50% - 50px);
+  transform:rotate(-20deg) scale(0);
+}
+
+.braco.direito{
+  left:50%;
+  transform:rotate(20deg) scale(0);
+}
+
+.perna{
+  width:12px;
+  height:60px;
+  background:#444;
+  border-radius:6px;
+  top:120px;
+}
+
+.perna.esquerda{
+  left:calc(50% - 20px);
+  transform:rotate(15deg) scale(0);
+}
+
+.perna.direita{
+  left:calc(50% + 14px);
+  transform:rotate(-15deg) scale(0);
+}
+
+.bonecoParte.mostrar{
+  opacity:1;
+  transform:scale(1);
+}
+
+.letras button{
+  margin:.3rem;
+  padding:.6rem 1rem;
+}
+
+/* FOGOS */
+#fogos{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:0;
+}
+
+/* ❤️ CORAÇÕES */
+.heart{
+  position:fixed;
+  top:-20px;
+  width:20px;
+  height:20px;
+  background:red;
+  transform:rotate(45deg);
+  animation:fall linear forwards;
+  z-index:1;
+}
+
+.heart::before,
+.heart::after{
+  content:"";
+  position:absolute;
+  width:20px;
+  height:20px;
+  background:red;
+  border-radius:50%;
+}
+
+.heart::before{
+  top:-10px;
+  left:0;
+}
+
+.heart::after{
+  left:-10px;
+  top:0;
+}
+
+@keyframes fall{
+  to{
+    transform:translateY(100vh) rotate(45deg);
+    opacity:0;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- 🎵 MÚSICA -->
+<iframe
+  src="https://www.youtube.com/embed/bpOSxM0rNPM?autoplay=1&loop=1&playlist=bpOSxM0rNPM"
+  allow="autoplay"
+  style="position:absolute; left:-9999px">
+</iframe>
+
+
+<!-- TELA INICIAL -->
+<div class="tela" id="telaInicio">
+  <h1>Hoje é o seu dia, Shao!!</h1>
+  <div id="pergunta"></div>
+  <div class="gif" id="gifPergunta"></div>
+
+  <div class="botoes">
+    <button id="sim">Siiiiimmm!!!</button>
+    <button id="nao">Não…</button>
+  </div>
+</div>
+
+<!-- TELA NÃO -->
+<div class="tela hidden" id="telaNao">
+  <p id="textoNao" style="font-size:2.4rem;"></p>
+  <img id="gifNao">
+  <button class="voltar" onclick="voltar()">Voltar.</button>
+</div>
+
+<!-- TELA FORCA -->
+<div class="tela hidden" id="telaForca">
+  <h1>Vamos para o último desafio, descubra a palavra misteriosa</h1>
+  <p>Tenta não errar, anju</p>
+  <div id="boneco">
+    <div class="bonecoParte cabeca" id="cabeca"></div>
+    <div class="bonecoParte corpo" id="corpo"></div>
+    <div class="bonecoParte braco esquerdo" id="bracoE"></div>
+    <div class="bonecoParte braco direito" id="bracoD"></div>
+    <div class="bonecoParte perna esquerda" id="pernaE"></div>
+    <div class="bonecoParte perna direita" id="pernaD"></div>
+  </div>
+  <div id="forcaPalavra"></div>
+  <div class="letras" id="letras"></div>
+</div>
+
+<!-- TELA FINAL -->
+<div class="tela hidden" id="telaFinal">
+  <canvas id="fogos"></canvas>
+  <h1>🎉 Feliz Aniversário, biscoitinho!</h1>
+
+
+<p>
+  Hoje é o seu dia, e eu espero de verdade que você sinta um pouquinho de tudo aquilo
+  que costuma espalhar por aí sem nem perceber.
+  Sabe essa sua energia boa, esse jeito leve e divertido de estar no mundo?
+  Que hoje ela volte pra você em forma de risadas, abraços, momentos bons
+  e aquela sensação gostosa de que a vida está fazendo sentido.
+</p>
+
+<p>
+  Que esse novo ciclo venha com histórias incríveis pra contar,
+  daquelas que rendem risadas depois, com dias leves, noites tranquilas
+  e desafios que você saiba enfrentar do seu jeito,
+  com inteligência, humor e esse olhar curioso que você tem sobre tudo (te odeio, fica encarando kkk).
+</p>
+
+<p>
+  Que nunca te faltem motivos pra sorrir, pessoas que te façam bem
+  e momentos que valham a pena ser lembrados.
+  Você é esse tipo raro de pessoa que deixa tudo um pouco mais interessante
+  só por estar ali.
+</p>
+
+<p>
+  Seja numa conversa boba, numa mesa de jogo, numa risada fora de hora
+  ou num silêncio confortável.
+  Talvez você nem perceba, mas isso faz diferença.
+  Faz muita.
+</p>
+
+<p>
+  Obrigada por existir exatamente assim.
+  Obrigada por ser quem você é, sem esforço, sem pose,
+  sem tentar impressionar, só sendo você.
+</p>
+
+<p>
+  Aproveita… porque hoje o dia é todo seu. 🎂✨
+</p>
+
+<p style="margin-top:2rem; font-style:italic;">
+  E só pra constar, eu estou amando fazer parte da sua vida.
+  Estar com você deixa meus dias mais leves, mais divertidos
+  e, de um jeito simples, melhores.
+  Gosto da sua companhia, do seu jeito
+  e de como tudo parece fluir quando a gente está junto (mesmo você negando).
+</p>
+
+<p>
+  Que esse ciclo te traga ainda mais aventuras,
+  boas surpresas e muitos motivos pra comemorar.
+  E que, em meio a tudo isso, você continue sendo essa pessoa incrível
+  que eu tenho o prazer de conhecer melhor a cada dia que passa. 💖
+</p>
+
+<p style="margin-top:2rem; font-weight:bold;">
+  🎲 Missão concluída com sucesso.<br>
+  Você desbloqueou +1 ano de histórias, aprendizados e momentos inesquecíveis.<br>
+  Que os dados rolem sempre a seu favor, hoje e em todas as campanhas da vida🎲🎲🎲.
+</p>
+
+
+</div>
+
+<script>
+/* ELEMENTOS */
+const telaInicio = document.getElementById("telaInicio");
+const telaNao = document.getElementById("telaNao");
+const telaForca = document.getElementById("telaForca");
+const telaFinal = document.getElementById("telaFinal");
+
+const pergunta = document.getElementById("pergunta");
+const gifPergunta = document.getElementById("gifPergunta");
+const textoNao = document.getElementById("textoNao");
+const gifNao = document.getElementById("gifNao");
+
+const sim = document.getElementById("sim");
+const nao = document.getElementById("nao");
+
+const letras = document.getElementById("letras");
+const forcaPalavra = document.getElementById("forcaPalavra");
+
+const partes = {
+  cabeca: document.getElementById("cabeca"),
+  corpo: document.getElementById("corpo"),
+  bracoE: document.getElementById("bracoE"),
+  bracoD: document.getElementById("bracoD"),
+  pernaE: document.getElementById("pernaE"),
+  pernaD: document.getElementById("pernaD")
+};
+
+/* FUNÇÃO MOSTRAR TELA */
+function mostrarTela(t){
+  [telaInicio,telaNao,telaForca,telaFinal].forEach(x=>x.classList.add("hidden"));
+  t.classList.remove("hidden");
+}
+
+/* DADOS */
+const perguntas=[
+  "Então… chegou o seu dia. Preparado para um feliz aniversário do jeito mais especial possível?",
+  "Topa começar hoje com sorrisos bobos, risadas soltas e uma energia boa te acompanhando o dia inteiro?",
+  "Aceita todos os votos de coisas boas, momentos felizes e histórias incríveis que este novo ciclo promete?",
+  "Última confirmação: missão aceita? Recompensas desbloqueadas nessa nova etapa da sua vida?"
+];
+
+const gifsSim=[
+  "https://media.tenor.com/gouAeOTVZh4AAAAM/happy-fun.gif",
+  "https://i.pinimg.com/originals/4f/b2/3c/4fb23cac581a9d93cfe7e73b2aebabee.gif",
+  "https://i.pinimg.com/originals/48/01/bc/4801bc9432e17d50141c691e6b2d7d07.gif",
+  "https://tabulaquadrada.com.br/wp-content/uploads/capa-post-mecanica-rolagem-dados.gif"
+];
+
+const textosNao=[
+  "Ah não, volta lá e escolhe Sim",
+  "Palhaço. Volta e escolhe Sim",
+  "Te dou uma surra. Volta e escolhe Sim",
+  "Vou partir pra ignorância se você não voltar e escolher Sim"
+];
+
+const gifsNao=[
+  "https://media.tenor.com/5_mka3xdnSEAAAAM/ge.gif",
+  "https://miro.medium.com/1*AU11ABJYBgXAV1Vv0DvxPw.gif",
+  "https://i.pinimg.com/originals/2f/80/47/2f8047609a7f18bfadfdddbb4623b80e.gif",
+  "https://i.pinimg.com/originals/85/6c/ea/856ceaea3e84561af61e0ee20c914b65.gif"
+];
+
+let i=0;
+
+/* INICIAL */
+pergunta.textContent=perguntas[0];
+const img=document.createElement("img");
+img.src=gifsSim[0];
+gifPergunta.appendChild(img);
+
+/* BOTÃO NÃO FOGE */
+function fugir(){
+  const area=document.querySelector(".botoes");
+  nao.style.left=Math.random()*(area.clientWidth-nao.offsetWidth)+"px";
+  nao.style.top=Math.random()*(area.clientHeight-nao.offsetHeight)+"px";
+}
+nao.addEventListener("mouseenter", fugir);
+nao.addEventListener("touchstart", fugir);
+
+nao.onclick=()=>{
+  mostrarTela(telaNao);
+  textoNao.textContent=textosNao[i];
+  gifNao.src=gifsNao[i];
+};
+
+function voltar(){
+  mostrarTela(telaInicio);
+}
+
+/* SIM */
+sim.onclick=()=>{
+  i++;
+  if(i<perguntas.length){
+    pergunta.textContent=perguntas[i];
+    gifPergunta.innerHTML="";
+    const im=document.createElement("img");
+    im.src=gifsSim[i];
+    gifPergunta.appendChild(im);
+  }else{
+    mostrarTela(telaForca);
+    iniciarForca();
+  }
+};
+
+/* FORCA */
+const palavra="FELIZ ANIVERSARIO";
+let acertos=[], erros=0;
+
+function iniciarForca(){
+  acertos=[];
+  erros=0;
+  Object.values(partes).forEach(p=>p.classList.remove("mostrar"));
+
+  letras.innerHTML="";
+  atualizar();
+
+  "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").forEach(l=>{
+    const b=document.createElement("button");
+    b.textContent=l;
+    b.onclick=()=>{verificar(l); b.disabled=true};
+    letras.appendChild(b);
+  });
+}
+
+function verificar(l){
+  if(!palavra.includes(l)){
+    erros++;
+
+    if(erros===1) partes.cabeca.classList.add("mostrar");
+    if(erros===2){
+      partes.corpo.classList.add("mostrar");
+      partes.bracoE.classList.add("mostrar");
+      partes.bracoD.classList.add("mostrar");
+    }
+    if(erros===3){
+      partes.pernaE.classList.add("mostrar");
+      partes.pernaD.classList.add("mostrar");
+    }
+
+  }else{
+    acertos.push(l);
+  }
+  atualizar();
+}
+
+function atualizar(){
+  let txt="", win=true;
+  for(let c of palavra){
+    if(c===" "){txt+="  "; continue;}
+    if(acertos.includes(c)) txt+=c+" ";
+    else{txt+="_ "; win=false;}
+  }
+  forcaPalavra.textContent=txt;
+  if(win) mostrarTela(telaFinal), iniciarFogos();
+}
+
+/* FOGOS */
+function iniciarFogos(){
+  const canvas=document.getElementById("fogos");
+  const ctx=canvas.getContext("2d");
+  canvas.width=innerWidth;
+  canvas.height=innerHeight;
+
+  let p=[];
+  function boom(x,y){
+    for(let i=0;i<40;i++)
+      p.push({x,y,vx:(Math.random()-.5)*6,vy:(Math.random()-.5)*6,l:60});
+  }
+
+  document.addEventListener("mousemove",e=>boom(e.clientX,e.clientY));
+
+  (function anim(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    p.forEach((a,i)=>{
+      a.x+=a.vx; a.y+=a.vy; a.vy+=.05; a.l--;
+      ctx.fillStyle=`hsl(${Math.random()*360},100%,60%)`;
+      ctx.beginPath();
+      ctx.arc(a.x,a.y,3,0,7);
+      ctx.fill();
+      if(a.l<=0)p.splice(i,1);
+    });
+    requestAnimationFrame(anim);
+  })();
+}
+
+/* ❤️ CORAÇÕES CAINDO */
+setInterval(() => {
+  const heart = document.createElement('div');
+  heart.className = 'heart';
+  heart.style.left = Math.random() * window.innerWidth + 'px';
+  heart.style.animationDuration = 3 + Math.random() * 3 + 's';
+  document.body.appendChild(heart);
+  setTimeout(() => heart.remove(), 6000);
+}, 300);
+</script>
+
+</body>
+</html>
